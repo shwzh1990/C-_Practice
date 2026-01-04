@@ -1,0 +1,25 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/jack/C-_Practice/ringbuff/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+ALL	./makefile	/^ALL:$/;"	t
+CXX	./makefile	/^CXX = g++$/;"	m
+SRCS	./makefile	/^SRCS = main.cpp $/;"	m
+TARGET	./makefile	/^TARGET = ringbuf_test$/;"	m
+buff_	./ringbuff.h	/^		std::vector<T> buff_;$/;"	m	class:ringbuff	typeref:typename:std::vector<T>
+capacity_	./ringbuff.h	/^		size_t capacity_;$/;"	m	class:ringbuff	typeref:typename:size_t
+main	./main.cpp	/^int main(void)$/;"	f	typeref:typename:int
+next_pos	./ringbuff.h	/^size_t ringbuff<T>::next_pos(size_t current_pos)$/;"	f	class:ringbuff	typeref:typename:size_t
+pop	./ringbuff.h	/^bool ringbuff<T>::pop(T& s)$/;"	f	class:ringbuff	typeref:typename:bool
+put	./ringbuff.h	/^bool ringbuff<T>:: put(T &&s)$/;"	f	class:ringbuff	typeref:typename:bool
+read_pos_	./ringbuff.h	/^		std::atomic<size_t> read_pos_;$/;"	m	class:ringbuff	typeref:typename:std::atomic<size_t>
+ringbuff	./ringbuff.h	/^class ringbuff$/;"	c
+ringbuff	./ringbuff.h	/^ringbuff<T>::ringbuff(size_t capacity) : write_pos_{0}, read_pos_{0}, capacity_(capacity)$/;"	f	class:ringbuff
+write_pos_	./ringbuff.h	/^		std::atomic<size_t> write_pos_;$/;"	m	class:ringbuff	typeref:typename:std::atomic<size_t>
