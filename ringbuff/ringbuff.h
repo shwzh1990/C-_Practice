@@ -25,7 +25,7 @@ class ringbuff
 
 };
 template<typename T>
-ringbuff<T>::ringbuff(size_t capacity) : write_pos_{0}, read_pos_{0}, capacity_(capacity), buff_(capacity_)
+ringbuff<T>::ringbuff(size_t capacity) : write_pos_{0}, read_pos_{0}, capacity_(capacity), buff_(capacity_ + 1)
 {
   assert(capacity > 1);
 }
@@ -66,5 +66,5 @@ bool ringbuff<T>::pop(T& s)
 template<typename T>
 size_t ringbuff<T>::next_pos(size_t current_pos)
 {
-  return (current_pos + 1) % capacity_;
+  return (current_pos + 1) & (capacity_ - 1);
 }
