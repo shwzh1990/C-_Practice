@@ -1,7 +1,7 @@
 #include "log.h"
 #include <chrono>
 
-const size_t ops_counter = 1000000;
+const size_t ops_counter = 10000000;
 
 int main(void)
 {

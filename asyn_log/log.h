@@ -25,7 +25,7 @@ class Log
 				 LogLevel level_;
 				 bool enable_asyn_;
 				 ringbuff<std::string> rb;
-				 std::string append_level(LogLevel level);
+				 int append_level(LogLevel level, char* buff);
 				 bool close_;
 };
 

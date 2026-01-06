@@ -2,9 +2,11 @@
 #include <bits/floatn-common.h>
 #include <chrono>
 #include <cstdarg>
+#include <cstddef>
 #include <cstdio>
 #include <iostream>
 #include <memory>
+#include <ostream>
 #include <stdexcept>
 #include <thread>
 #include <stdarg.h>
@@ -44,12 +46,12 @@ void Log::write(LogLevel level, const char* fmt,...)
 {
   va_list args1;
   va_list args2;
-  std::string str = "";
-  size_t attemp = 0;
+  //size_t attemp = 0;
+  size_t debug_suffix_size = 0;
   char temp_buff[1024] = {0};
   if(level <= level_)
   {
-     str = append_level(level);
+     debug_suffix_size = (size_t)append_level(level, temp_buff);
      va_start(args1, fmt);
      va_copy(args2, args1);
      int size = std::vsnprintf(nullptr, 0, fmt, args1);
@@ -63,19 +65,17 @@ void Log::write(LogLevel level, const char* fmt,...)
 
      if(size < 1024)
      {
-        vsnprintf(temp_buff, sizeof(temp_buff), fmt, args2);
-        str = str + std::string(temp_buff, size);
+        vsnprintf(temp_buff + debug_suffix_size , sizeof(temp_buff) - debug_suffix_size - 1, fmt, args2);
      }
      else
      {
       std::vector<char> buff(size + 1);
       vsnprintf(buff.data(), buff.size(), fmt, args2);
-      str = str + std::string(buff.data(), size);
      }
      va_end(args2);
     if(enable_asyn_)
     {
-      while(!rb.put(str))
+      while(!rb.put(temp_buff))
       {
         //attemp++;
         //if(attemp <= 200)
@@ -91,38 +91,38 @@ void Log::write(LogLevel level, const char* fmt,...)
     }
     else
     {
-       std::cout << str << "\n";
+       std::cout << temp_buff << "\n";
     }
      
 
   }
 }
 
-std::string Log::append_level(LogLevel level)
+int Log::append_level(LogLevel level, char* buff)
 {
-  std::string str = "";
+  int size = 0;
   switch(level)
   {
     case LogLevel::INFO:
-      str = "[INFO]: ";
+      size = std::sprintf(buff, "[INFO]: ");
     break;
 
     case LogLevel::DEBUG:
-      str = "[DEBUG]: ";
+       size = std::sprintf(buff, "[DEBUG]: ");
     break;
 
     case LogLevel::WARN:
-      str = "[WARN]: ";
+       size = std::sprintf(buff, "[WARN]: ");
     break;
 
     case LogLevel::ERROR:
-      str = "[ERROR]: ";
+       size = std::sprintf(buff, "[ERROR]: ");
     break;
     default:
-      str = "[INFO]: ";
+      size = std::sprintf(buff, "[INFO]: ");
     break;
   }
-  return str;
+  return size;
 }
 
 Log* Log::instance(void)
@@ -134,6 +134,7 @@ Log* Log::instance(void)
 void Log::log_close(void)
 {
 	close_ = true;
+  std::cout << std::flush;
 }
 
 void Log::asyn_log_func(void)
@@ -141,11 +142,11 @@ void Log::asyn_log_func(void)
   std::string s = "";
   while(1)
   {
-    if(Log::instance()->close_ == true) return;
     while(Log::instance()->rb.pop(s))
     {
        std::cout << s << "\n";
     }
     //std::this_thread::yield();
+    if(Log::instance()->close_ == true) return;
   }
 }
