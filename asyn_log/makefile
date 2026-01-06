@@ -1,13 +1,13 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -O3 -Wall -Wextra 
+CXXFLAGS = -std=c++20 -O3 -Wall -Wextra 
 
 # 目标可执行文件
-TARGET = ringbuf
+TARGET = log
 
-TEST_TARGET = ringbuff_bench_test
+TEST_TARGET = log_bench_test
 # 源文件
-SRCS = main.cpp 
-TEST = bench_main.cpp
+SRCS = main.cpp log.cpp
+TEST = bench_main.cpp log.cpp
 
 ALL:
 	$(CXX) -g $(CXXFLAGS) $(SRCS) -o  $(TARGET)
