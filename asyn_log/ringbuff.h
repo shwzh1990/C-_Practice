@@ -12,7 +12,8 @@ class ringbuff
 
 		~ringbuff() = default;
 	
-		bool put(T &&s);
+    template<typename U>
+		bool put(U &&s);
 		bool pop(T &s);
 	private:
 		alignas(64) std::atomic<size_t> write_pos_;
@@ -31,7 +32,8 @@ ringbuff<T>::ringbuff(size_t capacity) : write_pos_{0}, read_pos_{0}, capacity_(
 }
 
 template<typename T>
-bool ringbuff<T>:: put(T &&s)
+template<typename U>
+bool ringbuff<T>:: put(U &&s)
 {
   size_t w = write_pos_.load(std::memory_order_relaxed);
   size_t next_write_pos = next_pos(w);
@@ -39,7 +41,7 @@ bool ringbuff<T>:: put(T &&s)
      {
        return false;
      }
-   buff_[w] = std::forward<T>(s);
+   buff_[w] = std::forward<U>(s);
    write_pos_.store(next_write_pos, std::memory_order_release);
    return true;
 
@@ -66,5 +68,5 @@ bool ringbuff<T>::pop(T& s)
 template<typename T>
 size_t ringbuff<T>::next_pos(size_t current_pos)
 {
-  return (current_pos + 1) & (capacity_ - 1);
+  return (current_pos + 1) % (capacity_ + 1);
 }

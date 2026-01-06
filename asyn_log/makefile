@@ -14,7 +14,6 @@ ALL:
 	
 test:
 	$(CXX) -g $(CXXFLAGS) $(TEST) -o  $(TEST_TARGET)
-	./$(TEST_TARGET)
 
 clean:
 	-rm $(TARGET) $(TEST_TARGET) *.o

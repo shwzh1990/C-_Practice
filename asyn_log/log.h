@@ -13,18 +13,20 @@ enum class LogLevel
 class Log
 {
 	public: 
-			   Log();
+               Log();
 	       ~Log();
 	       void init(LogLevel level, bool enable_asyn = true);
 				 static void asyn_log_func(void);
 				 void write(LogLevel level, const char* fmt, ...);
 				 static Log* instance();
+		void log_close();
   private:
 				 std::unique_ptr<std::thread> aysn_log_;
 				 LogLevel level_;
 				 bool enable_asyn_;
 				 ringbuff<std::string> rb;
 				 std::string append_level(LogLevel level);
+				 bool close_;
 };
 
 #define LOG_BASE(level, fmt, ...) \

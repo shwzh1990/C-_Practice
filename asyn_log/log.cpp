@@ -15,6 +15,7 @@ Log::Log():rb(1024)
   aysn_log_ = nullptr;
   enable_asyn_ = false;
   level_ = LogLevel::INFO;
+  close_ = false;
   
 }
 
@@ -45,6 +46,7 @@ void Log::write(LogLevel level, const char* fmt,...)
   va_list args2;
   std::string str = "";
   size_t attemp = 0;
+  char temp_buff[1024] = {0};
   if(level <= level_)
   {
      str = append_level(level);
@@ -59,26 +61,32 @@ void Log::write(LogLevel level, const char* fmt,...)
        throw std::runtime_error("fmt error");
      }
 
-     std::vector<char> buff(size + 1);
-     vsnprintf(buff.data(), buff.size(), fmt, args2);
+     if(size < 1024)
+     {
+        vsnprintf(temp_buff, sizeof(temp_buff), fmt, args2);
+        str = str + std::string(temp_buff, size);
+     }
+     else
+     {
+      std::vector<char> buff(size + 1);
+      vsnprintf(buff.data(), buff.size(), fmt, args2);
+      str = str + std::string(buff.data(), size);
+     }
      va_end(args2);
     if(enable_asyn_)
     {
-      while(!rb.put(str + std::string(buff.data(), size)))
+      while(!rb.put(str))
       {
-        attemp++;
-        if(attemp <= 100)
+        //attemp++;
+        //if(attemp <= 200)
         {
           __builtin_ia32_pause();
         }
-        else if(attemp <= 500)
+       // else 
         {
-          std::this_thread::yield();
+         // std::this_thread::yield();
         }
-        else
-        {
-          std::this_thread::sleep_for(std::chrono::milliseconds(20));
-        }
+        
       }
     }
     else
@@ -123,12 +131,21 @@ Log* Log::instance(void)
    return &log;
 }
 
+void Log::log_close(void)
+{
+	close_ = true;
+}
+
 void Log::asyn_log_func(void)
 {
   std::string s = "";
-  while(Log::instance()->rb.pop(s))
+  while(1)
   {
-     std::cout << s << "\n";
+    if(Log::instance()->close_ == true) return;
+    while(Log::instance()->rb.pop(s))
+    {
+       std::cout << s << "\n";
+    }
+    //std::this_thread::yield();
   }
-  std::this_thread::yield();
 }
