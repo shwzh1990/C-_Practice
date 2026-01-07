@@ -1,4 +1,4 @@
-*.o
-*.sh
-tags
-
+*/*.o
+*/*.sh
+*/tags
+*/*.log
