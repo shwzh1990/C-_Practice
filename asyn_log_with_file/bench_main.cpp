@@ -1,11 +1,13 @@
 #include "log.h"
 #include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <thread>
 
-const size_t ops_counter = 10000000;
+const size_t ops_counter = 1000000;
 
-int main(void)
+void test1(void)
 {
-  Log::instance()->init(LogLevel::INFO);
   auto start = std::chrono::high_resolution_clock::now();
   for(size_t i = 0; i < ops_counter; ++i)
   {
@@ -23,5 +25,12 @@ int main(void)
 std::cerr << "finish " << ops_counter << " operations\n";
 std::cerr << "total time consuming: " << duration.count() << " seconds\n";
 std::cerr << "throughput: " << ops_per_sec / 1e6 << " millions/s\n";
-return 0;
+}
+
+
+int main(void)
+{
+  Log::instance()->init(LogLevel::INFO);
+  test1();
+
 }

@@ -193,7 +193,7 @@ void Log::asyn_log_func(void)
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_flush_time);
     if((!Log::instance()->file_cache_size.empty() && (Log::instance()->file_cache_size.size() >= 2 * 1024)) || duration.count() >= 10)
     {
-      ssize_t result = write(Log::instance()->log_fd_, Log::instance()->file_cache_size.data(), Log::instance()->file_cache_size.size());
+       result = write(Log::instance()->log_fd_, Log::instance()->file_cache_size.data(), Log::instance()->file_cache_size.size());
       if(result != static_cast<ssize_t>(Log::instance()->file_cache_size.size()))
       {
         fprintf(stderr, "the read write in num is %ld, should be write in bytes is %ld", result, Log::instance()->file_cache_size.size());
@@ -208,7 +208,7 @@ void Log::asyn_log_func(void)
       {
         Log::instance()->file_cache_size.append(temp_str);
       }
-      ssize_t result = write(Log::instance()->log_fd_, Log::instance()->file_cache_size.data(), Log::instance()->file_cache_size.size());
+      result = write(Log::instance()->log_fd_, Log::instance()->file_cache_size.data(), Log::instance()->file_cache_size.size());
       (void)result;
       Log::instance()->file_cache_size.clear();
       return;
