@@ -1,0 +1,36 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-g",
+      "-std=c++20",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-o",
+      "log",
+      "main.cpp"
+    ],
+    "directory": "/home/jack/C-_Practice/asyn_log_with_file",
+    "file": "/home/jack/C-_Practice/asyn_log_with_file/main.cpp",
+    "output": "/home/jack/C-_Practice/asyn_log_with_file/log"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-g",
+      "-std=c++20",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-o",
+      "log",
+      "log.cpp"
+    ],
+    "directory": "/home/jack/C-_Practice/asyn_log_with_file",
+    "file": "/home/jack/C-_Practice/asyn_log_with_file/log.cpp",
+    "output": "/home/jack/C-_Practice/asyn_log_with_file/log"
+  }
+]

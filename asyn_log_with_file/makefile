@@ -1,0 +1,19 @@
+CXX = g++
+CXXFLAGS = -std=c++20 -O3 -Wall -Wextra 
+
+# 目标可执行文件
+TARGET = log
+
+TEST_TARGET = log_bench_test
+# 源文件
+SRCS = main.cpp log.cpp
+TEST = bench_main.cpp log.cpp
+
+ALL:
+	$(CXX) -g $(CXXFLAGS) $(SRCS) -o  $(TARGET)
+	
+test:
+	$(CXX) -g $(CXXFLAGS) $(TEST) -o  $(TEST_TARGET)
+
+clean:
+	-rm $(TARGET) $(TEST_TARGET) *.o *.log
