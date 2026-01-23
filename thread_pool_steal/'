@@ -1,0 +1,43 @@
+#ifndef __STEALQUEUE_H
+#define __STEALQUEUE_H
+
+#include <deque>
+#include <functional>
+#include <optional>
+#include <mutex>
+#include <condition_variable>
+#include <type_traits>
+
+using Tasks = std::function<void>
+
+class WorkStealingPool
+{
+    struct LocalQueue
+    {
+       std::deque<Task> tasks;
+       std::mutex mtx;
+    }
+
+    void push(Task t)
+    {
+      std::lock_guard<std::mutex> lock(mtx);
+      tasks.push_front(std::move(t));
+    }
+
+    std::optional try_pop(void)
+    {
+      std::lock_guard<std::mutex> lock(mtx);
+      if(tasks.empty()) return std::nullopt;
+      t = std::move(tasks.front())
+      tasks.pop_fron();
+      return tasks
+
+
+    }
+
+
+}
+
+
+
+#endif
